@@ -27,4 +27,28 @@ module SessionsHelper
 		self.current_user = nil 
 	end
 
+	def deny_access
+		storelocation
+		flash[:notice] = "Please sign in to access this page." 
+		redirect_to signin_path
+	end
+
+	def current_user?(user)
+		user == current_user 
+	end
+
+	def storelocation
+		session[:redirect]= request.request_uri
+
+	end
+
+	def redirect_back_or(default) 
+		redirect_to(session[:redirect] || default) 
+		clear_redirect_to
+	end
+
+	def clear_redirect_to 
+		session[:redirect] = nil
+	end
+
 end
