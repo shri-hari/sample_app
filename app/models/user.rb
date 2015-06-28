@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
 	attr_accessor :password
 	attr_accessible :name, :email, :password, :password_confirmation
 
+	has_many :microposts, :dependent => :destroy
+
 	EmailRegex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
 # confirm password validation
@@ -35,7 +37,10 @@ class User < ActiveRecord::Base
 		return user if user.has_password?(submitted_password)
 	end
 
- 
+	def feed
+		microposts
+	end
+
 	def encrypt_password
 		unless password.nil?
 			self.salt = make_salt 

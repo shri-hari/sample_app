@@ -51,4 +51,8 @@ module SessionsHelper
 		session[:redirect] = nil
 	end
 
+	def authenticate
+      deny_access unless signed_in?
+    end
+
 end
