@@ -9,12 +9,26 @@ class ApplicationController < ActionController::Base
   # Scrub sensitive parameters from your log
   filter_parameter_logging :password
 
-before_filter :set_cache_buster
+	def following
+    @title = "Following"
+    @user = User.find(params[:id])
+    @users = @user.following.paginate(:page => params[:page])
+    render 'show_follow'
+  end
 
-def set_cache_buster
-   response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
-   response.headers["Pragma"] = "no-cache"
-   response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
-end
+	def followers
+		@title = "Followers"
+		@user = User.find(params[:id])
+		@users = @user.followers.paginate(:page => params[:page]) 
+    render 'show_follow'
+	end
+ 	
+  before_filter :set_cache_buster
+
+	def set_cache_buster
+   	response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+   	response.headers["Pragma"] = "no-cache"
+   	response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
+	end
 
 end
